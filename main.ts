@@ -26,6 +26,11 @@ if (charCount < 1 || charCount > 280) {
 if (joke.trim().length === 0) {
   throw new Error("joke is whitespace-only");
 }
+// The brief's economy criterion is one line: a stray newline in the
+// joke would ship a two-line entry, so fail loudly on it too.
+if (joke.includes("\n") || joke.includes("\r")) {
+  throw new Error("joke must be a single line");
+}
 
 const outDir = resolve(process.env.MAKEFUN_OUTPUT_DIR ?? "/output");
 mkdirSync(outDir, { recursive: true });
